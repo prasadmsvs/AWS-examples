@@ -1,0 +1,9 @@
+echo "delete bucket"
+
+if [--z "$1"]; then
+    echo "bucket name empty"
+fi
+
+BUCKET_NAME=$1
+
+aws s3api delete-bucket --bucket $BUCKET_NAME 
