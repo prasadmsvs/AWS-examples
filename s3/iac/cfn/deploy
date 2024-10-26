@@ -1,0 +1,10 @@
+
+#!/usr/bin/env bash
+
+STACK_NAME="cfn-stack"
+TEMPLATE_FILE="template.yml"
+
+aws cloudformation deploy \
+    --template-file $TEMPLATE_FILE \
+    --region "us-east-1" \
+    --stack-name $STACK_NAME 
