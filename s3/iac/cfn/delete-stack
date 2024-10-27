@@ -1,0 +1,8 @@
+
+#!/usr/bin/env bash
+
+STACK_NAME="cfn-stack-6"
+
+aws cloudformation delete-stack \
+    --region us-east-1 \
+    --stack-name $STACK_NAME 
