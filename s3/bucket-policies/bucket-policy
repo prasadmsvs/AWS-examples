@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+aws s3 mb aws-bucket-policy
+
+aws s3api put-bucket-policy --bucket aws-bucket-policy --policy file://policy.json
