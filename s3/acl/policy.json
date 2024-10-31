@@ -1,0 +1,16 @@
+{
+  "Grants": [
+    {
+      "Grantee": {
+        "DisplayName": "prasad.manthini",
+        "ID": "28fbfc775690f0c3aa35d21c620e8d55312bcb2f84bf0ef2ae4b4b6e5f1d6ede",
+        "Type": "CanonicalUser"
+      },
+      "Permission": "FULL_CONTROL"
+    }
+  ],
+  "Owner": {
+    "DisplayName": "prasadmsvs",
+    "ID": "6f732b88a2c00442e3222a279c77591c3157fcf322e88f6933d5e9dd3c847a90"
+  }
+}

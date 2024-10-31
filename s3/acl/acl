@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+BUCKET_NAME=$1
+
+aws s3api create-bucket \
+    --bucket $BUCKET_NAME \
+    --region us-east-1 \
+    --create-bucket-configuration "LocationConstraint=ap-south-1" \
+    --query Location \
+    --output text
+
+aws s3api put-public-access-block \
+    --bucket $BUCKET_NAME \
+    --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+
+aws s3api get-public-access-block \
+    --bucket $BUCKET_NAME
+
+aws s3api put-bucket-ownership-controls \
+    --bucket $BUCKET_NAME \
+    --ownership-controls="Rules=[{ObjectOwnership=BucketOwnerPreferred}]"
+
+aws s3api put-bucket-acl \
+    --bucket $BUCKET_NAME \
+    --access-control-policy file://policy.json
