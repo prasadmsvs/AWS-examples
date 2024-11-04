@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+igwId=$1
+vpcId=$2
+
+aws ec2 detach-internet-gateway \
+    --internet-gateway-id $igwId \
+    --vpc-id $vpcId
+
+#delete IGW
+aws ec2 delete-internet-gateway \
+    --internet-gateway-id $igwId
+
+#delete vpc
+aws ec2 delete-vpc \
+    --vpc-id $vpcId \
+    --region ap-south-1
