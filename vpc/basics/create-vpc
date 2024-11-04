@@ -24,8 +24,21 @@ aws ec2 attach-internet-gateway \
     --vpc-id $VPC_ID \
     --region ap-south-1
 
+#get route table
+ROUTE_TABLE_ID=$(aws ec2 describe-route-tables --filters 'Name=vpc-id,Values=$VPC_ID' --output text)
+echo $ROUTE_TABLE_ID
+
 #create subnet
+SUBNET_ID=$(aws ec2 create-subnet \
+    --vpc-id $VPC_ID \
+    --cidr-block 172.1.0.0/20 \
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=my-ipv6-only-subnet}]' \
+    --region ap-south-1 \
+    --query Subnet.SubnetId)
 
-#associate subnet
+echo $SUBNET_ID
 
-#add route table
+#associate route table to subnet
+aws ec2 associate-route-table --route-table-id $ROUTE_TABLE_ID --subnet-id $SUBNET_ID
+
+#add route 
