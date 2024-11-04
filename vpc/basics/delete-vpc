@@ -5,11 +5,13 @@ vpcId=$2
 
 aws ec2 detach-internet-gateway \
     --internet-gateway-id $igwId \
-    --vpc-id $vpcId
+    --vpc-id $vpcId \
+    --region ap-south-1
 
 #delete IGW
 aws ec2 delete-internet-gateway \
-    --internet-gateway-id $igwId
+    --internet-gateway-id $igwId \
+    --region ap-south-1
 
 #delete vpc
 aws ec2 delete-vpc \
