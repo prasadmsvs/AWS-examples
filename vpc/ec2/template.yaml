@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Creates an EC2 instance with Apache server, security group, and IAM role'
+
+Parameters:
+  KeyName:
+    Type: String
+    Description: Name of an existing EC2 Key Pair
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
+    Properties:
+      ImageId: ami-04a37924ffe27da53
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !GetAtt MySecurityGroup.GroupId
+      IamInstanceProfile:
+        !Ref MyInstanceProfile
+      UserData:
+        Fn::Base64:
+          Fn::Join:
+            - ''
+            - - '#!/bin/bash\n'
+              - 'sudo yum update -y\n'
+              - 'sudo yum install httpd -y\n'
+              - 'sudo systemctl start httpd\n'
+              - 'sudo systemctl enable httpd\n'
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties:
+      GroupDescription: 'Allow SSH and HTTP traffic from specific IP ranges'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0  # Replace with your specific IP range or security group
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0  # Replace with your specific IP range or security group
+
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    DeletionPolicy: Delete
+    Properties:
+      Roles:
+        - !Ref MyInstanceRole
+
+  MyInstanceRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Delete
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
