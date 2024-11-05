@@ -2,6 +2,9 @@
 
 igwId=$1
 vpcId=$2
+subnetId=$3
+routeTableId=$4
+associationId=$5
 
 aws ec2 detach-internet-gateway \
     --internet-gateway-id $igwId \
@@ -12,6 +15,12 @@ aws ec2 detach-internet-gateway \
 aws ec2 delete-internet-gateway \
     --internet-gateway-id $igwId \
     --region ap-south-1
+
+aws ec2 disassociate-route-table --association-id $associationId --region ap-south-1
+
+aws ec2 delete-subnet --subnet-id $subnetId --region ap-south-1
+
+aws ec2 delete-route-table --route-table-id $routeTableId --region ap-south-1
 
 #delete vpc
 aws ec2 delete-vpc \
